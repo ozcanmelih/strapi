@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  strapi:
+    image: strapi/strapi
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./data/strapi-image:/srv/app
+    ports:
+      - '1337:1337'
+    depends_on:
+      - mysql
+
+  strapidb:
+    image: postgres:12.0-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - ./data/postgres-image:/var/lib/postgresql/data/
+    ports:
+      - '5432:5432'
